@@ -1,8 +1,13 @@
 #!/bin/bash -eux
 
-# Add vagrant user to sudoers.
-echo "$PACKER_USERNAME        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
-sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
+# Install Ansible repository.
+apt -y update && apt-get -y upgrade
+apt -y install software-properties-common
+apt-add-repository ppa:ansible/ansible
 
-# Disable daily apt unattended updates.
-echo 'APT::Periodic::Enable "0";' >> /etc/apt/apt.conf.d/10periodic
+# Install Ansible.
+apt -y update
+apt -y install ansible
+
+# Add user to sudoers.
+echo "$PACKER_USERNAME        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
