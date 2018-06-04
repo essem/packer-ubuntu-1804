@@ -40,7 +40,7 @@
         " kbd-chooser/method=us",
         " keyboard-configuration/layout=USA",
         " keyboard-configuration/variant=USA",
-        " locale=en_US",
+        " locale=en_US.UTF-8",
         " netcfg/get_domain=vm",
         " netcfg/get_hostname={{ user `hostname` }}",
         " grub-installer/bootdev=/dev/sda",
