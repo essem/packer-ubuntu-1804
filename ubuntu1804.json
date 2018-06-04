@@ -1,6 +1,8 @@
 {
   "variables": {
-    "version": ""
+    "hostname": "essem-box",
+    "username": "essem",
+    "password": "essem"
   },
   "provisioners": [
     {
@@ -10,7 +12,10 @@
     },
     {
       "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "environment_vars": [
+        "PACKER_USERNAME={{ user `username` }}"
+      ],
+      "execute_command": "echo '{{ user `password` }}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "script": "scripts/setup.sh"
     },
     {
@@ -42,10 +47,14 @@
         " keyboard-configuration/variant=USA",
         " locale=en_US",
         " netcfg/get_domain=vm",
-        " netcfg/get_hostname=vagrant",
+        " netcfg/get_hostname={{ user `hostname` }}",
         " grub-installer/bootdev=/dev/sda",
         " noapic",
         " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
+        " passwd/user-fullname={{ user `username` }}",
+        " passwd/username={{ user `username` }}",
+        " passwd/user-password={{ user `password` }}",
+        " passwd/user-password-again={{ user `password` }}",
         " -- <enter>"
       ],
       "boot_wait": "5s",
@@ -59,11 +68,11 @@
       ],
       "iso_checksum_type": "sha256",
       "iso_checksum": "a7f5c7b0cdd0e9560d78f1e47660e066353bb8a79eb78d1fc3f4ea62a07e6cbc",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
+      "ssh_username": "{{ user `username` }}",
+      "ssh_password": "{{ user `password` }}",
       "ssh_port": 22,
       "ssh_wait_timeout": "10000s",
-      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "shutdown_command": "echo '{{ user `password` }}'|sudo -S shutdown -P now",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "virtualbox_version_file": ".vbox_version",
       "vm_name": "packer-ubuntu-18.04-amd64",
