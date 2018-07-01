@@ -11,3 +11,7 @@
         - curl
         - vim
         - ubuntu-desktop
+    - import_role:
+        name: golang # Based on https://github.com/jlund/ansible-go
+    - import_role:
+        name: vscode # Based on https://github.com/gantsign/ansible-role-visual-studio-code
