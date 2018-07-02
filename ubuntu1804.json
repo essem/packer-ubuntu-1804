@@ -17,13 +17,14 @@
       "type": "ansible-local",
       "playbook_file": "ansible/main.yml",
       "role_paths": [
+        "ansible/roles/docker",
         "ansible/roles/golang",
         "ansible/roles/vscode"
       ]
     },
     {
       "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo '{{ user `password` }}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "script": "scripts/cleanup.sh"
     }
   ],

@@ -1,0 +1,50 @@
+---
+- name: Ensure dependencies are installed.
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+
+- name: Add Docker apt key.
+  become: yes
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    state: present
+
+- name: Add Docker repository.
+  become: yes
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+    update_cache: yes
+
+- name: Install Docker.
+  become: yes
+  apt:
+    name: docker-ce
+    state: present
+
+- name: Ensure Docker is started and enabled at boot.
+  become: yes
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Install Docker Compose (if configured).
+  become: yes
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: 0755
+
+- name: Ensure docker users are added to the docker group.
+  become: yes
+  user:
+    name: essem
+    groups: docker
+    append: yes

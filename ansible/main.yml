@@ -12,6 +12,8 @@
         - vim
         - ubuntu-desktop
     - import_role:
+        name: docker # Based on https://github.com/geerlingguy/ansible-role-docker
+    - import_role:
         name: golang # Based on https://github.com/jlund/ansible-go
     - import_role:
         name: vscode # Based on https://github.com/gantsign/ansible-role-visual-studio-code
